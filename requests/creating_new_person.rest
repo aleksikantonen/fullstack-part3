@@ -2,6 +2,7 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "content": "VS Code REST testing",
-  "important": true
+  "id": "",
+  "name": "Test Person",
+  "number": "123-456-7890"
 }
