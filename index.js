@@ -1,7 +1,6 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
-
-app.use(express.json())
 
 let persons = [
     {
@@ -25,6 +24,9 @@ let persons = [
         number: "39-23-6423122"
     }
 ]
+
+app.use(express.json())
+app.use(morgan('tiny'))
 
 const info = `<div>Phonebook has info for ${persons.length} people</div>`
 const fullDate = `<p>${new Date()}</p>`
@@ -55,7 +57,7 @@ app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
     persons = persons.filter(person => person.id !== id)
 
-response.status(204).end()
+    response.status(204).end()
 })
 
 const generateId = () => Math.floor(Math.random() * 1000).toString()
