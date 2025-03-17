@@ -11,7 +11,7 @@ app.use(express.json())
 const cors = require('cors')
 app.use(cors())
 
-morgan.token('body', (req, res) => JSON.stringify(req.body))
+morgan.token('body', (req) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.get('/', (request, response) => {
@@ -25,7 +25,7 @@ app.get('/info', (request, response, next) => {
       const fullDate = `<p>${new Date()}</p>`
       response.send(info + fullDate)
     })
-    .catch(error => next(error))  
+    .catch(error => next(error))
 })
 
 app.get('/api/persons', (request, response, next) => {
@@ -33,7 +33,7 @@ app.get('/api/persons', (request, response, next) => {
     .then(persons => {
       response.json(persons)
     })
-    .catch(error => next(error))  
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -50,7 +50,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -99,8 +99,8 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   // { new: true } returns the modified document rather than the original
   Person.findByIdAndUpdate(
-    request.params.id, 
-    person, 
+    request.params.id,
+    person,
     { new: true, runValidators: true, context: 'query' }
   )
     .then(updatedPerson => {
